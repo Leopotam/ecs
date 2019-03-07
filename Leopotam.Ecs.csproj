@@ -1,6 +1,15 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>net452;netstandard2.0</TargetFrameworks>
     <DefineConstants>NET_STANDARD_2_0</DefineConstants>
+    <Version>1.0.0</Version>
+    <Authors>Leopotam</Authors>
+    <Product>LeoEcs</Product>
+    <Description>LeoECS is a fast Entity Component System (ECS) Framework powered by C#</Description>
+    <PackageProjectUrl>https://github.com/Leopotam/ecs</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Leopotam/ecs.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <IncludeSource>true</IncludeSource>
+    <IncludeSymbols>true</IncludeSymbols>
   </PropertyGroup>
 </Project>
