@@ -93,7 +93,7 @@ namespace Leopotam.Ecs {
 #endif
         }
 
-#if NET_4_6 || NET_STANDARD_2_0
+#if NET46 || NETSTANDARD2_0
         [System.Runtime.CompilerServices.MethodImpl (System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 #endif
         public int RequestNewId () {
@@ -110,7 +110,7 @@ namespace Leopotam.Ecs {
             return id;
         }
 
-#if NET_4_6 || NET_STANDARD_2_0
+#if NET46 || NETSTANDARD2_0
         [System.Runtime.CompilerServices.MethodImpl (System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 #endif
         public void RecycleById (int id) {
@@ -134,21 +134,21 @@ namespace Leopotam.Ecs {
             ReservedItems[ReservedItemsCount++] = id;
         }
 
-#if NET_4_6 || NET_STANDARD_2_0
+#if NET46 || NETSTANDARD2_0
         [System.Runtime.CompilerServices.MethodImpl (System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 #endif
         public object GetExistItemById (int idx) {
             return Items[idx];
         }
 
-#if NET_4_6 || NET_STANDARD_2_0
+#if NET46 || NETSTANDARD2_0
         [System.Runtime.CompilerServices.MethodImpl (System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 #endif
         public int GetComponentTypeIndex () {
             return TypeIndex;
         }
 
-#if NET_4_6 || NET_STANDARD_2_0
+#if NET46 || NETSTANDARD2_0
         [System.Runtime.CompilerServices.MethodImpl (System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 #endif
         public bool IsOneFrameComponent () {

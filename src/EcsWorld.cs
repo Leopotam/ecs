@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using Leopotam.Ecs.Internals;
 
-#if !NET_4_6 && !NET_STANDARD_2_0
+#if !NET46 && !NETSTANDARD2_0
 #warning [Leopotam.Ecs] .Net Framework v3.5 support deprecated and will be removed in next release.
 #endif
 
@@ -295,7 +295,7 @@ namespace Leopotam.Ecs {
         /// </summary>
         /// <param name="entity">Entity.</param>
         /// <param name="isNew">Is component was added in this call?</param>
-#if NET_4_6 || NET_STANDARD_2_0
+#if NET46 || NETSTANDARD2_0
         [System.Runtime.CompilerServices.MethodImpl (System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 #endif
         public T EnsureComponent<T> (int entity, out bool isNew) where T : class, new () {
@@ -346,7 +346,7 @@ namespace Leopotam.Ecs {
         /// Adds component to entity. Will throw exception if component already exists.
         /// </summary>
         /// <param name="entity">Entity.</param>
-#if NET_4_6 || NET_STANDARD_2_0
+#if NET46 || NETSTANDARD2_0
         [System.Runtime.CompilerServices.MethodImpl (System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 #endif
         public T AddComponent<T> (int entity) where T : class, new () {
@@ -397,7 +397,7 @@ namespace Leopotam.Ecs {
         /// </summary>
         /// <param name="entity">Entity.</param>
         /// <param name="noerror">Suppress error if component not exists (DEBUG mode only).</param>
-#if NET_4_6 || NET_STANDARD_2_0
+#if NET46 || NETSTANDARD2_0
         [System.Runtime.CompilerServices.MethodImpl (System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 #endif
         public void RemoveComponent<T> (int entity, bool noError = false) where T : class, new () {
@@ -426,7 +426,7 @@ namespace Leopotam.Ecs {
         /// Gets component on entity.
         /// </summary>
         /// <param name="entity">Entity.</param>
-#if NET_4_6 || NET_STANDARD_2_0
+#if NET46 || NETSTANDARD2_0
         [System.Runtime.CompilerServices.MethodImpl (System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 #endif
         public T GetComponent<T> (int entity) where T : class, new () {
@@ -470,7 +470,7 @@ namespace Leopotam.Ecs {
         /// Returns true if entity exists.
         /// </summary>
         /// <param name="entity">Entity.</param>
-#if NET_4_6 || NET_STANDARD_2_0
+#if NET46 || NETSTANDARD2_0
         [System.Runtime.CompilerServices.MethodImpl (System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 #endif
         public bool IsEntityExists (int entity) {
@@ -592,7 +592,7 @@ namespace Leopotam.Ecs {
         /// <summary>
         /// Gets filter with specific include / exclude masks.
         /// </summary>
-#if NET_4_6 || NET_STANDARD_2_0
+#if NET46 || NETSTANDARD2_0
         [System.Runtime.CompilerServices.MethodImpl (System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 #endif
         public T GetFilter<T> () where T : EcsFilter {
@@ -603,7 +603,7 @@ namespace Leopotam.Ecs {
         /// Gets filter with specific include / exclude masks.
         /// </summary>
         /// <param name="filterType">Type of filter.</param>
-#if NET_4_6 || NET_STANDARD_2_0
+#if NET46 || NETSTANDARD2_0
         [System.Runtime.CompilerServices.MethodImpl (System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 #endif
         public EcsFilter GetFilter (Type filterType) {
@@ -683,7 +683,7 @@ namespace Leopotam.Ecs {
         /// <summary>
         /// Create entity with support of re-using reserved instances.
         /// </summary>
-#if NET_4_6 || NET_STANDARD_2_0
+#if NET46 || NETSTANDARD2_0
         [System.Runtime.CompilerServices.MethodImpl (System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 #endif
         protected int CreateEntityInternal () {
@@ -713,7 +713,7 @@ namespace Leopotam.Ecs {
             return entity;
         }
 
-#if NET_4_6 || NET_STANDARD_2_0
+#if NET46 || NETSTANDARD2_0
         [System.Runtime.CompilerServices.MethodImpl (System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 #endif
         protected void AddDelayedUpdate (DelayedUpdate.Op type, int entity, IEcsComponentPool component, int componentId) {
@@ -728,7 +728,7 @@ namespace Leopotam.Ecs {
         /// </summary>
         /// <param name="entity">Entity Id.</param>
         /// <param name="entityData">EcsEntity instance.</param>
-#if NET_4_6 || NET_STANDARD_2_0
+#if NET46 || NETSTANDARD2_0
         [System.Runtime.CompilerServices.MethodImpl (System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 #endif
         protected void ReserveEntity (int entity, EcsEntityInternal entityData) {
@@ -755,7 +755,7 @@ namespace Leopotam.Ecs {
         /// <param name="entity">Entity.</param>
         /// <param name="oldMask">Old component state.</param>
         /// <param name="newMask">New component state.</param>
-#if NET_4_6 || NET_STANDARD_2_0
+#if NET46 || NETSTANDARD2_0
         [System.Runtime.CompilerServices.MethodImpl (System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 #endif
         protected void UpdateFilters (int entity, EcsComponentMask oldMask, EcsComponentMask newMask) {

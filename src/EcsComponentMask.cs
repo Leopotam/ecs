@@ -48,7 +48,7 @@ namespace Leopotam.Ecs {
         }
 #endif
 
-#if NET_4_6 || NET_STANDARD_2_0
+#if NET46 || NETSTANDARD2_0
         [System.Runtime.CompilerServices.MethodImpl (System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 #endif
         public void SetBit (int bitId, bool state) {
@@ -73,7 +73,7 @@ namespace Leopotam.Ecs {
             }
         }
 
-#if NET_4_6 || NET_STANDARD_2_0
+#if NET46 || NETSTANDARD2_0
         [System.Runtime.CompilerServices.MethodImpl (System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 #endif
         public bool GetBit (int bitId) {
@@ -86,7 +86,7 @@ namespace Leopotam.Ecs {
             return i != -1;
         }
 
-#if NET_4_6 || NET_STANDARD_2_0
+#if NET46 || NETSTANDARD2_0
         [System.Runtime.CompilerServices.MethodImpl (System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 #endif
         public void CopyFrom (EcsComponentMask mask) {
@@ -97,7 +97,7 @@ namespace Leopotam.Ecs {
             Array.Copy (mask.Bits, 0, Bits, 0, BitsCount);
         }
 
-#if NET_4_6 || NET_STANDARD_2_0
+#if NET46 || NETSTANDARD2_0
         [System.Runtime.CompilerServices.MethodImpl (System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 #endif
         public bool IsCompatible (EcsFilter filter) {
@@ -123,7 +123,7 @@ namespace Leopotam.Ecs {
             return false;
         }
 
-#if NET_4_6 || NET_STANDARD_2_0
+#if NET46 || NETSTANDARD2_0
         [System.Runtime.CompilerServices.MethodImpl (System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 #endif
         public bool IsIntersects (EcsComponentMask mask) {

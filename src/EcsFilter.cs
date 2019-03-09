@@ -35,7 +35,7 @@ namespace Leopotam.Ecs {
             AddComponentPool (EcsComponentPool<Inc1>.Instance);
         }
 
-#if NET_4_6 || NET_STANDARD_2_0
+#if NET46 || NETSTANDARD2_0
         [System.Runtime.CompilerServices.MethodImpl (System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 #endif
         public override void RaiseOnAddEvent (int entity) {
@@ -53,7 +53,7 @@ namespace Leopotam.Ecs {
                 _listeners[j].OnEntityAdded (entity);
             }
         }
-#if NET_4_6 || NET_STANDARD_2_0
+#if NET46 || NETSTANDARD2_0
         [System.Runtime.CompilerServices.MethodImpl (System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 #endif
         public override void RaiseOnRemoveEvent (int entity) {
@@ -119,7 +119,7 @@ namespace Leopotam.Ecs {
             AddComponentPool (EcsComponentPool<Inc2>.Instance);
             ValidateMasks (2, 0);
         }
-#if NET_4_6 || NET_STANDARD_2_0
+#if NET46 || NETSTANDARD2_0
         [System.Runtime.CompilerServices.MethodImpl (System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 #endif
         public override void RaiseOnAddEvent (int entity) {
@@ -143,7 +143,7 @@ namespace Leopotam.Ecs {
                 _listeners[j].OnEntityAdded (entity);
             }
         }
-#if NET_4_6 || NET_STANDARD_2_0
+#if NET46 || NETSTANDARD2_0
         [System.Runtime.CompilerServices.MethodImpl (System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 #endif
         public override void RaiseOnRemoveEvent (int entity) {
@@ -218,7 +218,7 @@ namespace Leopotam.Ecs {
             AddComponentPool (EcsComponentPool<Inc3>.Instance);
             ValidateMasks (3, 0);
         }
-#if NET_4_6 || NET_STANDARD_2_0
+#if NET46 || NETSTANDARD2_0
         [System.Runtime.CompilerServices.MethodImpl (System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 #endif
         public override void RaiseOnAddEvent (int entity) {
@@ -248,7 +248,7 @@ namespace Leopotam.Ecs {
                 _listeners[j].OnEntityAdded (entity);
             }
         }
-#if NET_4_6 || NET_STANDARD_2_0
+#if NET46 || NETSTANDARD2_0
         [System.Runtime.CompilerServices.MethodImpl (System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 #endif
         public override void RaiseOnRemoveEvent (int entity) {
@@ -332,7 +332,7 @@ namespace Leopotam.Ecs {
             AddComponentPool (EcsComponentPool<Inc4>.Instance);
             ValidateMasks (4, 0);
         }
-#if NET_4_6 || NET_STANDARD_2_0
+#if NET46 || NETSTANDARD2_0
         [System.Runtime.CompilerServices.MethodImpl (System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 #endif
         public override void RaiseOnAddEvent (int entity) {
@@ -368,7 +368,7 @@ namespace Leopotam.Ecs {
                 _listeners[j].OnEntityAdded (entity);
             }
         }
-#if NET_4_6 || NET_STANDARD_2_0
+#if NET46 || NETSTANDARD2_0
         [System.Runtime.CompilerServices.MethodImpl (System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 #endif
         public override void RaiseOnRemoveEvent (int entity) {
@@ -480,14 +480,14 @@ namespace Leopotam.Ecs {
         /// </summary>
         public int[] Entities = new int[MinSize];
 
-#if NET_4_6 || NET_STANDARD_2_0
+#if NET46 || NETSTANDARD2_0
         [System.Runtime.CompilerServices.MethodImpl (System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 #endif
         public Enumerator GetEnumerator () {
             return new Enumerator (_entitiesCount);
         }
 
-#if NET_4_6 || NET_STANDARD_2_0
+#if NET46 || NETSTANDARD2_0
         [System.Runtime.CompilerServices.MethodImpl (System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 #endif
         /// <summary>
@@ -509,7 +509,7 @@ namespace Leopotam.Ecs {
             readonly int _count;
             int _idx;
 
-#if NET_4_6 || NET_STANDARD_2_0
+#if NET46 || NETSTANDARD2_0
             [System.Runtime.CompilerServices.MethodImpl (System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 #endif
             internal Enumerator (int entitiesCount) {
@@ -518,7 +518,7 @@ namespace Leopotam.Ecs {
             }
 
             public int Current {
-#if NET_4_6 || NET_STANDARD_2_0
+#if NET46 || NETSTANDARD2_0
                 [System.Runtime.CompilerServices.MethodImpl (System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 #endif
                 get { return _idx; }
@@ -526,26 +526,26 @@ namespace Leopotam.Ecs {
 
             object System.Collections.IEnumerator.Current { get { return null; } }
 
-#if NET_4_6 || NET_STANDARD_2_0
+#if NET46 || NETSTANDARD2_0
             [System.Runtime.CompilerServices.MethodImpl (System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 #endif
             public void Dispose () { }
 
-#if NET_4_6 || NET_STANDARD_2_0
+#if NET46 || NETSTANDARD2_0
             [System.Runtime.CompilerServices.MethodImpl (System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 #endif
             public bool MoveNext () {
                 return ++_idx < _count;
             }
 
-#if NET_4_6 || NET_STANDARD_2_0
+#if NET46 || NETSTANDARD2_0
             [System.Runtime.CompilerServices.MethodImpl (System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 #endif
             public void Reset () {
                 _idx = -1;
             }
 
-#if NET_4_6 || NET_STANDARD_2_0
+#if NET46 || NETSTANDARD2_0
             [System.Runtime.CompilerServices.MethodImpl (System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 #endif
             public int GetCount () {
