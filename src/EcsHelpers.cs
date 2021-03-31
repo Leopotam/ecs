@@ -18,6 +18,9 @@ namespace Leopotam.Ecs {
 
         [MethodImpl (MethodImplOptions.AggressiveInlining)]
         public EcsGrowList (int capacity) {
+#if DEBUG
+            if (capacity <= 0) { throw new Exception ("Capacity should be greater than zero."); }
+#endif
             Items = new T[capacity];
             Count = 0;
         }
