@@ -82,7 +82,6 @@ namespace Leopotam.Ecs {
     public static class EcsEntityExtensions {
         /// <summary>
         /// Replaces or adds new one component to entity.
-        /// Slower than Get() direct call.
         /// </summary>
         /// <typeparam name="T">Type of component.</typeparam>
         /// <param name="entity">Entity.</param>
