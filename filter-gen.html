@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeoECS Filters generator</title>
+    <style>
+        html {
+            font-family: monospace;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    </style>
+</head>
+<script src="https://cdn.jsdelivr.net/npm/ejs@3.0.1/ejs.min.js"></script>
+
+<body>
+<div class="container">
+    <div>
+        <label>Include components amount</label>
+        <input id="incValue" type="number" value="6" />
+    </div>
+    <div>
+        <label>Exclude components amount</label>
+        <input id="excValue" type="number" value="2" />
+    </div>
+    <div>
+        <button onclick="onGenClick()">Generate</button>
+    </div>
+    <div>
+        <textarea id="output" rows="40" cols="100" readonly wrap="off"></textarea>
+    </div>
+</div>
+</body>
+
+<script>
+    const onGenClick = () => {
+        const incCount = +document.getElementById('incValue').value
+        const excCount = +document.getElementById('excValue').value
+        const tpl = `
+// ----------------------------------------------------------------------------
+// The Proprietary or MIT-Red License
+// Copyright (c) 2012-2022 Leopotam <leopotam@yandex.ru>
+// ----------------------------------------------------------------------------
+
+using System;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+
+// ReSharper disable InconsistentNaming
+// ReSharper disable ClassNeverInstantiated.Global
+
+namespace Leopotam.Ecs {
+#if LEOECS_FILTER_EVENTS
+    /// <summary>
+    /// Common interface for all filter listeners.
+    /// </summary>
+    public interface IEcsFilterListener {
+        void OnEntityAdded (in EcsEntity entity);
+        void OnEntityRemoved (in EcsEntity entity);
+    }
+#endif
+    /// <summary>
+    /// Container for filtered entities based on specified constraints.
+    /// </summary>
+#if ENABLE_IL2CPP
+    [Unity.IL2CPP.CompilerServices.Il2CppSetOption (Unity.IL2CPP.CompilerServices.Option.NullChecks, false)]
+    [Unity.IL2CPP.CompilerServices.Il2CppSetOption (Unity.IL2CPP.CompilerServices.Option.ArrayBoundsChecks, false)]
+#endif
+#if UNITY_2019_1_OR_NEWER
+    [UnityEngine.Scripting.Preserve]
+#endif
+    public abstract class EcsFilter {
+        protected EcsEntity[] Entities;
+        protected readonly Dictionary<int, int> EntitiesMap;
+        protected int EntitiesCount;
+        protected int LockCount;
+        protected readonly int EntitiesCacheSize;
+
+        DelayedOp[] _delayedOps;
+        int _delayedOpsCount;
+#if LEOECS_FILTER_EVENTS
+        protected IEcsFilterListener[] Listeners = new IEcsFilterListener[4];
+        protected int ListenersCount;
+#endif
+        protected internal int[] IncludedTypeIndices;
+        protected internal int[] ExcludedTypeIndices;
+
+        public Type[] IncludedTypes;
+        public Type[] ExcludedTypes;
+#if UNITY_2019_1_OR_NEWER
+        [UnityEngine.Scripting.Preserve]
+#endif
+        protected EcsFilter (EcsWorld world) {
+            EntitiesCacheSize = world.Config.FilterEntitiesCacheSize;
+            Entities = new EcsEntity[EntitiesCacheSize];
+            EntitiesMap = new Dictionary<int, int> (EntitiesCacheSize);
+            _delayedOps = new DelayedOp[EntitiesCacheSize];
+        }
+        
+        /// <summary>
+        /// Remove subscription from component pools.
+        /// </summary>
+        public abstract void Destroy ();
+        
+#if DEBUG
+        public Dictionary<int, int> GetInternalEntitiesMap () {
+            return EntitiesMap;
+        }
+#endif
+        [MethodImpl (MethodImplOptions.AggressiveInlining)]
+        public Enumerator GetEnumerator () {
+            return new Enumerator (this);
+        }
+
+        /// <summary>
+        /// Gets entity by index.
+        /// </summary>
+        [MethodImpl (MethodImplOptions.AggressiveInlining)]
+        public ref EcsEntity GetEntity (in int idx) {
+            return ref Entities[idx];
+        }
+
+        /// <summary>
+        /// Gets entities count.
+        /// </summary>
+        [MethodImpl (MethodImplOptions.AggressiveInlining)]
+        public int GetEntitiesCount () {
+            return EntitiesCount;
+        }
+
+        /// <summary>
+        /// Is filter not contains entities.
+        /// </summary>
+        [MethodImpl (MethodImplOptions.AggressiveInlining)]
+        public bool IsEmpty () {
+            return EntitiesCount == 0;
+        }
+#if LEOECS_FILTER_EVENTS
+        /// <summary>
+        /// Subscribes listener to filter events.
+        /// </summary>
+        /// <param name="listener">Listener.</param>
+        public void AddListener (IEcsFilterListener listener) {
+#if DEBUG
+            for (int i = 0, iMax = ListenersCount; i < iMax; i++) {
+                if (Listeners[i] == listener) {
+                    throw new Exception ("Listener already subscribed.");
+                }
+            }
+#endif
+            if (Listeners.Length == ListenersCount) {
+                Array.Resize (ref Listeners, ListenersCount << 1);
+            }
+            Listeners[ListenersCount++] = listener;
+        }
+
+        // ReSharper disable once CommentTypo
+        /// <summary>
+        /// Unsubscribes listener from filter events.
+        /// </summary>
+        /// <param name="listener">Listener.</param>
+        public void RemoveListener (IEcsFilterListener listener) {
+            for (int i = 0, iMax = ListenersCount; i < iMax; i++) {
+                if (Listeners[i] == listener) {
+                    ListenersCount--;
+                    // cant fill gap with last element due listeners order is important.
+                    Array.Copy (Listeners, i + 1, Listeners, i, ListenersCount - i);
+                    break;
+                }
+            }
+        }
+#endif
+        /// <summary>
+        /// Is filter compatible with components on entity with optional added / removed component.
+        /// </summary>
+        /// <param name="entityData">Entity data.</param>
+        /// <param name="addedRemovedTypeIndex">Optional added (greater 0) or removed (less 0) component. Will be ignored if zero.</param>
+        [MethodImpl (MethodImplOptions.AggressiveInlining)]
+        internal bool IsCompatible (in EcsWorld.EcsEntityData entityData, int addedRemovedTypeIndex) {
+            var incIdx = IncludedTypeIndices.Length - 1;
+            for (; incIdx >= 0; incIdx--) {
+                var typeIdx = IncludedTypeIndices[incIdx];
+                var idx = entityData.ComponentsCountX2 - 2;
+                for (; idx >= 0; idx -= 2) {
+                    var typeIdx2 = entityData.Components[idx];
+                    if (typeIdx2 == -addedRemovedTypeIndex) {
+                        continue;
+                    }
+                    if (typeIdx2 == addedRemovedTypeIndex || typeIdx2 == typeIdx) {
+                        break;
+                    }
+                }
+                // not found.
+                if (idx == -2) {
+                    break;
+                }
+            }
+            // one of required component not found.
+            if (incIdx != -1) {
+                return false;
+            }
+            // check for excluded components.
+            if (ExcludedTypeIndices != null) {
+                for (var excIdx = 0; excIdx < ExcludedTypeIndices.Length; excIdx++) {
+                    var typeIdx = ExcludedTypeIndices[excIdx];
+                    for (var idx = entityData.ComponentsCountX2 - 2; idx >= 0; idx -= 2) {
+                        var typeIdx2 = entityData.Components[idx];
+                        if (typeIdx2 == -addedRemovedTypeIndex) {
+                            continue;
+                        }
+                        if (typeIdx2 == addedRemovedTypeIndex || typeIdx2 == typeIdx) {
+                            return false;
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+
+        [MethodImpl (MethodImplOptions.AggressiveInlining)]
+        protected bool AddDelayedOp (bool isAdd, in EcsEntity entity) {
+            if (LockCount <= 0) {
+                return false;
+            }
+            if (_delayedOps.Length == _delayedOpsCount) {
+                Array.Resize (ref _delayedOps, _delayedOpsCount << 1);
+            }
+            ref var op = ref _delayedOps[_delayedOpsCount++];
+            op.IsAdd = isAdd;
+            op.Entity = entity;
+            return true;
+        }
+#if LEOECS_FILTER_EVENTS
+        [MethodImpl (MethodImplOptions.AggressiveInlining)]
+        protected void ProcessListeners (bool isAdd, in EcsEntity entity) {
+            if (isAdd) {
+                for (int i = 0, iMax = ListenersCount; i < iMax; i++) {
+                    Listeners[i].OnEntityAdded (entity);
+                }
+            } else {
+                for (int i = 0, iMax = ListenersCount; i < iMax; i++) {
+                    Listeners[i].OnEntityRemoved (entity);
+                }
+            }
+        }
+#endif
+        [MethodImpl (MethodImplOptions.AggressiveInlining)]
+        void Lock () {
+            LockCount++;
+        }
+
+        [MethodImpl (MethodImplOptions.AggressiveInlining)]
+        void Unlock () {
+#if DEBUG
+            if (LockCount <= 0) {
+                throw new Exception ($"Invalid lock-unlock balance for \\"{GetType ().Name}\\".");
+            }
+#endif
+            LockCount--;
+            if (LockCount == 0 && _delayedOpsCount > 0) {
+                // process delayed operations.
+                for (int i = 0, iMax = _delayedOpsCount; i < iMax; i++) {
+                    ref var op = ref _delayedOps[i];
+                    if (op.IsAdd) {
+                        OnAddEntity (op.Entity);
+                    } else {
+                        OnRemoveEntity (op.Entity);
+                    }
+                }
+                _delayedOpsCount = 0;
+            }
+        }
+
+#if DEBUG
+        /// <summary>
+        /// For debug purposes. Check filters equality by included / excluded components.
+        /// </summary>
+        /// <param name="filter">Filter to compare.</param>
+        internal bool AreComponentsSame (EcsFilter filter) {
+            if (IncludedTypeIndices.Length != filter.IncludedTypeIndices.Length) {
+                return false;
+            }
+            for (var i = 0; i < IncludedTypeIndices.Length; i++) {
+                if (Array.IndexOf (filter.IncludedTypeIndices, IncludedTypeIndices[i]) == -1) {
+                    return false;
+                }
+            }
+            if ((ExcludedTypeIndices == null && filter.ExcludedTypeIndices != null) ||
+                (ExcludedTypeIndices != null && filter.ExcludedTypeIndices == null)) {
+                return false;
+            }
+            if (ExcludedTypeIndices != null) {
+                if (filter.ExcludedTypeIndices == null || ExcludedTypeIndices.Length != filter.ExcludedTypeIndices.Length) {
+                    return false;
+                }
+                for (var i = 0; i < ExcludedTypeIndices.Length; i++) {
+                    if (Array.IndexOf (filter.ExcludedTypeIndices, ExcludedTypeIndices[i]) == -1) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+#endif
+
+        /// <summary>
+        /// Event for adding compatible entity to filter.
+        /// Warning: Don't call manually!
+        /// </summary>
+        /// <param name="entity">Entity.</param>
+        public abstract void OnAddEntity (in EcsEntity entity);
+
+        /// <summary>
+        /// Event for removing non-compatible entity to filter.
+        /// Warning: Don't call manually!
+        /// </summary>
+        /// <param name="entity">Entity.</param>
+        public abstract void OnRemoveEntity (in EcsEntity entity);
+
+        public struct Enumerator : IDisposable {
+            readonly EcsFilter _filter;
+            readonly int _count;
+            int _idx;
+
+            [MethodImpl (MethodImplOptions.AggressiveInlining)]
+            internal Enumerator (EcsFilter filter) {
+                _filter = filter;
+                _count = _filter.GetEntitiesCount ();
+                _idx = -1;
+                _filter.Lock ();
+            }
+
+            public int Current {
+                [MethodImpl (MethodImplOptions.AggressiveInlining)]
+                get => _idx;
+            }
+
+#if ENABLE_IL2CPP
+            [Unity.IL2CPP.CompilerServices.Il2CppSetOption (Unity.IL2CPP.CompilerServices.Option.NullChecks, false)]
+            [Unity.IL2CPP.CompilerServices.Il2CppSetOption (Unity.IL2CPP.CompilerServices.Option.ArrayBoundsChecks, false)]
+#endif
+            [MethodImpl (MethodImplOptions.AggressiveInlining)]
+            public void Dispose () {
+                _filter.Unlock ();
+            }
+
+            [MethodImpl (MethodImplOptions.AggressiveInlining)]
+            public bool MoveNext () {
+                return ++_idx < _count;
+            }
+        }
+
+        struct DelayedOp {
+            public bool IsAdd;
+            public EcsEntity Entity;
+        }
+    }
+<% for (let i = 1; i <= data.incCount; i++) { -%>
+
+#if ENABLE_IL2CPP
+    [Unity.IL2CPP.CompilerServices.Il2CppSetOption (Unity.IL2CPP.CompilerServices.Option.NullChecks, false)]
+    [Unity.IL2CPP.CompilerServices.Il2CppSetOption (Unity.IL2CPP.CompilerServices.Option.ArrayBoundsChecks, false)]
+#endif
+#if UNITY_2019_1_OR_NEWER
+    [UnityEngine.Scripting.Preserve]
+#endif
+    public class EcsFilter<<% for (let ii = 1; ii <= i; ii++) { %><% if (ii > 1) { %>, <% } %>Inc<%=ii%><% } %>> : EcsFilter, IEcsComponentPoolResizeListener
+<% for (let ii = 1; ii <= i; ii++) { -%>
+        where Inc<%=ii%> : struct<% if (ii == i) { %> {<% } %>
+<% } -%>
+<% for (let ii = 1; ii <= i; ii++) { -%>
+        int[] _get<%=ii%>;
+<% } -%>
+
+<% for (let ii = 1; ii <= i; ii++) { -%>
+        readonly bool _allow<%=ii%>;
+<% } -%>
+
+<% for (let ii = 1; ii <= i; ii++) { -%>
+        readonly EcsComponentPool<Inc<%=ii%>> _pool<%=ii%>;
+        Inc<%=ii%>[] _pool<%=ii%>Items;
+<% } -%>
+<% for (let ii = 1; ii <= i; ii++) { -%>
+
+        [MethodImpl (MethodImplOptions.AggressiveInlining)]
+        public ref Inc<%=ii%> Get<%=ii%> (in int idx) {
+            return ref _pool<%=ii%>Items[_get<%=ii%>[idx]];
+        }
+<% } -%>
+<% for (let ii = 1; ii <= i; ii++) { -%>
+
+        [MethodImpl (MethodImplOptions.AggressiveInlining)]
+        public EcsComponentRef<Inc<%=ii%>> Get<%=ii%>Ref (in int idx) {
+            return _pool<%=ii%>.Ref (_get<%=ii%>[idx]);
+        }
+<% } -%>
+#if UNITY_2019_1_OR_NEWER
+        [UnityEngine.Scripting.Preserve]
+#endif
+        protected EcsFilter (EcsWorld world) : base (world) {
+<% for (let ii = 1; ii <= i; ii++) { -%>
+            _allow<%=ii%> = !EcsComponentType<Inc<%=ii%>>.IsIgnoreInFilter;
+<% } -%>
+<% for (let ii = 1; ii <= i; ii++) { -%>
+            _pool<%=ii%> = world.GetPool<Inc<%=ii%>> ();
+            _pool<%=ii%>.AddResizeListener (this);
+            _pool<%=ii%>Items = _pool<%=ii%>.Items;
+<% } -%>
+<% for (let ii = 1; ii <= i; ii++) { -%>
+            _get<%=ii%> = _allow<%=ii%> ? new int[EntitiesCacheSize] : null;
+<% } -%>
+            IncludedTypeIndices = new[] {
+<% for (let ii = 1; ii <= i; ii++) { -%>
+                EcsComponentType<Inc<%=ii%>>.TypeIndex<%if (ii < i) { %>,<% } %>
+<% } -%>
+            };
+            IncludedTypes = new[] {
+<% for (let ii = 1; ii <= i; ii++) { -%>
+                EcsComponentType<Inc<%=ii%>>.Type<%if (ii < i) { %>,<% } %>
+<% } -%>
+            };
+        }
+        
+        /// <summary>
+        /// For internal use.
+        /// </summary>
+        public override void Destroy () {
+<% for (let ii = 1; ii <= i; ii++) { -%>
+            _pool<%=ii%>.RemoveResizeListener (this);
+<% } -%>
+        }
+        
+        /// <summary>
+        /// For internal use.
+        /// </summary>
+        public void OnComponentPoolResize () {
+<% for (let ii = 1; ii <= i; ii++) { -%>
+            _pool<%=ii%>Items = _pool<%=ii%>.Items;
+<% } -%>
+        }
+
+        /// <summary>
+        /// For internal use.
+        /// </summary>
+        [MethodImpl (MethodImplOptions.AggressiveInlining)]
+        public override void OnAddEntity (in EcsEntity entity) {
+            if (AddDelayedOp (true, entity)) { return; }
+            if (Entities.Length == EntitiesCount) {
+                var newSize = EntitiesCount << 1;
+                Array.Resize (ref Entities, newSize);
+<% for (let ii = 1; ii <= i; ii++) { -%>
+                if (_allow<%=ii%>) { Array.Resize (ref _get<%=ii%>, newSize); }
+<% } -%>
+            }
+            // inlined and optimized EcsEntity.Get() call.
+            ref var entityData = ref entity.Owner.GetEntityData (entity);
+<% for (let ii = 1; ii <= i; ii++) { -%>
+            var allow<%=ii%> = _allow<%=ii%>;
+<% } -%>
+            for (int i = 0, iMax = entityData.ComponentsCountX2, left = <%=i%>; left > 0 && i < iMax; i += 2) {
+                var typeIdx = entityData.Components[i];
+                var itemIdx = entityData.Components[i + 1];
+<% for (let ii = 1; ii <= i; ii++) { -%>
+                if (allow<%=ii%> && typeIdx == EcsComponentType<Inc<%=ii%>>.TypeIndex) {
+                    _get<%=ii%>[EntitiesCount] = itemIdx;
+                    allow<%=ii%> = false;
+                    left--;
+<% if (ii !== i) { -%>
+                    continue;
+<% } -%>
+                }
+<% } -%>
+            }
+            EntitiesMap[entity.GetInternalId ()] = EntitiesCount;
+            Entities[EntitiesCount++] = entity;
+#if LEOECS_FILTER_EVENTS
+            ProcessListeners (true, entity);
+#endif
+        }
+
+        /// <summary>
+        /// For internal use.
+        /// </summary>
+        [MethodImpl (MethodImplOptions.AggressiveInlining)]
+        public override void OnRemoveEntity (in EcsEntity entity) {
+            if (AddDelayedOp (false, entity)) { return; }
+            var entityId = entity.GetInternalId ();
+            var idx = EntitiesMap[entityId];
+            EntitiesMap.Remove (entityId);
+            EntitiesCount--;
+            if (idx < EntitiesCount) {
+                Entities[idx] = Entities[EntitiesCount];
+                EntitiesMap[Entities[idx].GetInternalId ()] = idx;
+<% for (let ii = 1; ii <= i; ii++) { -%>
+                if (_allow<%=ii%>) { _get<%=ii%>[idx] = _get<%=ii%>[EntitiesCount]; }
+<% } -%>
+            }
+#if LEOECS_FILTER_EVENTS
+            ProcessListeners (false, entity);
+#endif
+        }
+<% for (let e = 1; e <= data.excCount; e++) { -%>
+
+        public class Exclude<<% for (let ee = 1; ee <= e; ee++) { %><% if (ee > 1) { %>, <% } %>Exc<%=ee%><% } %>> : EcsFilter<<% for (let ii = 1; ii <= i; ii++) { %><% if (ii > 1) { %>, <% } %>Inc<%=ii%><% } %>>
+<% for (let ee = 1; ee <= e; ee++) { -%>
+            where Exc<%=ee%> : struct<% if (ee == e) { %> {<% } %>
+<% } -%>
+#if UNITY_2019_1_OR_NEWER
+            [UnityEngine.Scripting.Preserve]
+#endif
+            protected Exclude (EcsWorld world) : base (world) {
+                ExcludedTypeIndices = new[] {
+<% for (let ee = 1; ee <= e; ee++) { -%>
+                    EcsComponentType<Exc<%=ee%>>.TypeIndex<%if (ee < e) { %>,<% } %>
+<% } -%>
+                };
+                ExcludedTypes = new[] {
+<% for (let ee = 1; ee <= e; ee++) { -%>
+                    EcsComponentType<Exc<%=ee%>>.Type<%if (ee < e) { %>,<% } %>
+<% } -%>
+                };
+            }
+        }
+<% } -%>
+    }
+<% } -%>
+}
+        `
+        document.getElementById('output').innerHTML = ejs.render(tpl, { data: { incCount, excCount } }).trim()
+    }
+</script>
+
+</html>
