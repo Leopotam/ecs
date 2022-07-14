@@ -396,7 +396,7 @@ namespace Leopotam.Ecs {
         [MethodImpl (MethodImplOptions.AggressiveInlining)]
         public EcsComponentPool<T> GetPool<T> () where T : struct {
             var typeIdx = EcsComponentType<T>.TypeIndex;
-            if (ComponentPools.Length < typeIdx) {
+            if (ComponentPools.Length <= typeIdx) {
                 var len = ComponentPools.Length << 1;
                 while (len <= typeIdx) {
                     len <<= 1;
