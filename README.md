@@ -399,6 +399,9 @@ class EcsStartup {
 * ["HypnoTap"](https://play.google.com/store/apps/details?id=com.ZlodeyStudios.HypnoTap)
 * ["TowerRunner Revenge"](https://play.google.com/store/apps/details?id=ru.zlodey.towerrunner20)
 * ["Natives"](https://alex-kpojb.itch.io/natives-ecs)
+* ["Kangaeru!"](https://kangaeru.space/)
+  
+  [![](https://img.youtube.com/vi/FcAw6QzzDdA/0.jpg)](https://youtu.be/FcAw6QzzDdA)
 
 # Расширения
 * [Интеграция в редактор Unity](https://github.com/Leopotam/ecs-unityintegration)
