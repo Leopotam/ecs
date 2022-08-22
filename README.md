@@ -384,7 +384,7 @@ class EcsStartup {
 
 * ["Pacman"](https://github.com/SH42913/pacmanecs)
 
-## Released games
+## Выпущенные игры
 * ["OUTERBLAST"](https://stuwustudio.itch.io/outerblast)
   
   [![](https://img.youtube.com/vi/PqCJsiyogTg/0.jpg)](https://www.youtube.com/watch?v=PqCJsiyogTg)
