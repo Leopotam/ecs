@@ -382,7 +382,11 @@ class EcsStartup {
 * ["Runner"](https://github.com/t1az2z/RunnerECS)
 
 
-* ["Pacman"](https://github.com/SH42913/pacmanecs)
+* ["Pacman"](https://github.com/SH42913/pacmanecs)   
+
+* ["Tetris"](https://github.com/fomgleb/tetris)
+  [![](https://user-images.githubusercontent.com/60964034/198828588-288efc77-30da-4b54-8879-920327ffb24d.png)](https://github.com/fomgleb/tetris)
+
 
 ## Выпущенные игры
 * ["OUTERBLAST"](https://stuwustudio.itch.io/outerblast)
