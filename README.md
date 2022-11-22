@@ -25,6 +25,7 @@
 * [Интеграция с движками](#Интеграция-с-движками)
     * [Unity](#Unity)
     * [Кастомный движок](#Кастомный-движок)
+* [Статьи](#Статьи)
 * [Проекты, использующие LeoECS](#Проекты-использующие-LeoECS)
     * [С исходниками](#С-исходниками)
     * [Выпущенные игры](#Выпущенные-игры)
@@ -348,6 +349,29 @@ class EcsStartup {
     }
 }
 ```
+
+# Статьи
+
+* ["Создание шутера с LeoECS. Часть 1"](https://habr.com/ru/post/573028/)
+
+  [![](https://habrastorage.org/getpro/habr/upload_files/f77/53f/bd5/f7753fbd5e6d9ad0fd1a6e734750277a.png)](https://habr.com/ru/post/573028/)
+
+* ["Создание шутера с LeoECS. Часть 2"](https://habr.com/ru/post/578054/)
+
+  [![](https://habrastorage.org/getpro/habr/upload_files/b76/595/263/b76595263c00346640f27d1e52c66323.png)](https://habr.com/ru/post/578054/)
+
+* ["Создание шутера с LeoECS. Часть 3"](https://habr.com/ru/post/585058/)
+
+  [![](https://habrastorage.org/getpro/habr/upload_files/d06/a68/587/d06a68587d3893edbcde2bb346f08abc.png)](https://habr.com/ru/post/585058/)
+
+* ["Создание шутера с LeoECS. Часть 4"](https://habr.com/ru/post/647233/)
+
+  [![](https://habrastorage.org/getpro/habr/upload_files/25a/747/725/25a747725de3b33c2964ce728490bb71.png)](https://habr.com/ru/post/647233/)
+
+* ["Всё что нужно знать про ECS"](https://habr.com/ru/post/665276/)
+
+  [![](https://habrastorage.org/r/w1560/getpro/habr/upload_files/3fd/5bc/544/3fd5bc5442b03a20d52a8003576056d4.png)](https://habr.com/ru/post/665276/)
+
 
 # Проекты, использующие LeoECS
 ## С исходниками
