@@ -25,6 +25,7 @@
 * [Интеграция с движками](#Интеграция-с-движками)
     * [Unity](#Unity)
     * [Кастомный движок](#Кастомный-движок)
+* [Статьи](#Статьи)
 * [Проекты, использующие LeoECS](#Проекты-использующие-LeoECS)
     * [С исходниками](#С-исходниками)
     * [Выпущенные игры](#Выпущенные-игры)
@@ -349,6 +350,29 @@ class EcsStartup {
 }
 ```
 
+# Статьи
+
+* ["Создание шутера с LeoECS. Часть 1"](https://habr.com/ru/post/573028/)
+
+  [![](https://habrastorage.org/getpro/habr/upload_files/f77/53f/bd5/f7753fbd5e6d9ad0fd1a6e734750277a.png)](https://habr.com/ru/post/573028/)
+
+* ["Создание шутера с LeoECS. Часть 2"](https://habr.com/ru/post/578054/)
+
+  [![](https://habrastorage.org/getpro/habr/upload_files/b76/595/263/b76595263c00346640f27d1e52c66323.png)](https://habr.com/ru/post/578054/)
+
+* ["Создание шутера с LeoECS. Часть 3"](https://habr.com/ru/post/585058/)
+
+  [![](https://habrastorage.org/getpro/habr/upload_files/d06/a68/587/d06a68587d3893edbcde2bb346f08abc.png)](https://habr.com/ru/post/585058/)
+
+* ["Создание шутера с LeoECS. Часть 4"](https://habr.com/ru/post/647233/)
+
+  [![](https://habrastorage.org/getpro/habr/upload_files/25a/747/725/25a747725de3b33c2964ce728490bb71.png)](https://habr.com/ru/post/647233/)
+
+* ["Всё что нужно знать про ECS"](https://habr.com/ru/post/665276/)
+
+  [![](https://habrastorage.org/r/w1560/getpro/habr/upload_files/3fd/5bc/544/3fd5bc5442b03a20d52a8003576056d4.png)](https://habr.com/ru/post/665276/)
+
+
 # Проекты, использующие LeoECS
 ## С исходниками
 * ["MatchTwo"](https://github.com/cadfoot/unity-ecs-match-two)
@@ -371,18 +395,27 @@ class EcsStartup {
   [![](https://img.youtube.com/vi/FxOcqVwue9g/0.jpg)](https://www.youtube.com/watch?v=FxOcqVwue9g)
 
 
+* ["Tetris"](https://github.com/fomgleb/tetris)
+
+  [![](https://user-images.githubusercontent.com/60964034/198828588-288efc77-30da-4b54-8879-920327ffb24d.png)](https://github.com/fomgleb/tetris)
+
+
 * ["3D Platformer"](https://github.com/supremestranger/3D-Platformer)
+
   [![](https://camo.githubusercontent.com/dcd2f525130d73f4688c1f1cfb12f6e37d166dae23a1c6fac70e5b7873c3ab21/68747470733a2f2f692e6962622e636f2f686d374c726d342f506c6174666f726d65722e706e67)](https://github.com/supremestranger/3D-Platformer)
 
 
 * ["SpaceInvaders (Guns&Bullets variation)"](https://github.com/GoodCatGames/SpaceInvadersEcs)
+
   [![](https://github.com/GoodCatGames/SpaceInvadersEcs/raw/master/docs/SpaceInvadersImage.png)](https://github.com/GoodCatGames/SpaceInvadersEcs)
 
 
-* ["Runner"](https://github.com/t1az2z/RunnerECS)
-
-
 * ["Pacman"](https://github.com/SH42913/pacmanecs)
+
+  [![](https://github.com/SH42913/pacmanecs/raw/master/Screenshots/PacManEcs_fZyXscSovk.png)](https://github.com/SH42913/pacmanecs)
+
+
+* ["Runner"](https://github.com/t1az2z/RunnerECS)
 
 ## Выпущенные игры
 * ["OUTERBLAST"](https://stuwustudio.itch.io/outerblast)
@@ -399,10 +432,10 @@ class EcsStartup {
 
   [![](https://img.youtube.com/vi/FcAw6QzzDdA/0.jpg)](https://youtu.be/FcAw6QzzDdA)
 
-* ["Boom Race"](https://play.google.com/store/apps/details?id=com.ZlodeyStudios.BoomRace)
-* ["HypnoTap"](https://play.google.com/store/apps/details?id=com.ZlodeyStudios.HypnoTap)
-* ["TowerRunner Revenge"](https://play.google.com/store/apps/details?id=ru.zlodey.towerrunner20)
+
 * ["Natives"](https://alex-kpojb.itch.io/natives-ecs)
+
+  [![](https://img.itch.zone/aW1hZ2UvMzU3OTkxLzE4MzA4MjEuZ2lm/794x1000/molzXR.gif)](https://alex-kpojb.itch.io/natives-ecs)
 
 # Расширения
 * [Интеграция в редактор Unity](https://github.com/Leopotam/ecs-unityintegration)
