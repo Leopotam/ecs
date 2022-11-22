@@ -441,7 +441,6 @@ class EcsStartup {
 * [Интеграция в редактор Unity](https://github.com/Leopotam/ecs-unityintegration)
 * [Поддержка Unity uGui](https://github.com/Leopotam/ecs-ui)
 * [Поддержка многопоточности](https://github.com/Leopotam/ecs-threads)
-* [SharpPhysics2D](https://github.com/7Bpencil/sharpPhysics/tree/LeoECS)
 * [UniLeo - Unity scene data converter](https://github.com/voody2506/UniLeo)
 * [Unity Physx events support](https://github.com/supremestranger/leoecs-physics)
 
