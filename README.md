@@ -1,7 +1,7 @@
 # LeoECS - Легковесный C# Entity Component System фреймворк
 Производительность, нулевые или минимальные аллокации, минимизация использования памяти, отсутствие зависимостей от любого игрового движка - это основные цели данного фреймворка.
 
-> **ВАЖНО!** РАЗРАБОТКА ДАННОГО ПРОЕКТА ПРЕКРАЩЕНА, РЕПОЗИТОРИЙ БУДЕТ ОТПРАВЛЕН В АРХИВ 22.06.2022. ВМЕСТО НЕГО РЕКОМЕНДУЕТСЯ ИСПОЛЬЗОВАТЬ [EcsLite](https://github.com/Leopotam/ecslite).
+> **ВАЖНО!** РАЗРАБОТКА ДАННОГО ПРОЕКТА ПРЕКРАЩЕНА, ВМЕСТО НЕГО СЛЕДУЕТ ИСПОЛЬЗОВАТЬ [EcsProto](https://leopotam.com/28/) или [EcsLite](https://github.com/Leopotam/ecslite).
 
 > **ВАЖНО!** Не забывайте использовать `DEBUG`-версии билдов для разработки и `RELEASE`-версии билдов для релизов: все внутренние проверки/исключения будут работать только в `DEBUG`-версиях и удалены для увеличения производительности в `RELEASE`-версиях.
 
@@ -28,7 +28,6 @@
 * [Статьи](#Статьи)
 * [Проекты, использующие LeoECS](#Проекты-использующие-LeoECS)
     * [С исходниками](#С-исходниками)
-    * [Выпущенные игры](#Выпущенные-игры)
 * [Расширения](#Расширения)
 * [Лицензия](#Лицензия)
 * [ЧаВо](#ЧаВо)
@@ -417,31 +416,11 @@ class EcsStartup {
 
 * ["Runner"](https://github.com/t1az2z/RunnerECS)
 
-## Выпущенные игры
-* ["OUTERBLAST"](https://stuwustudio.itch.io/outerblast)
-  
-  [![](https://img.youtube.com/vi/PqCJsiyogTg/0.jpg)](https://www.youtube.com/watch?v=PqCJsiyogTg)
-
-
-* ["Idle Delivery City Tycoon"](https://play.google.com/store/apps/details?id=com.Arctic.IdleTransportTycoon)
-  
-  [![](https://img.youtube.com/vi/FV-0Dq4kcy8/0.jpg)](https://www.youtube.com/watch?v=FV-0Dq4kcy8)
-
-
-* ["Kangaeru!"](https://play.google.com/store/apps/details?id=com.reoil.kangaeru)
-
-  [![](https://img.youtube.com/vi/FcAw6QzzDdA/0.jpg)](https://youtu.be/FcAw6QzzDdA)
-
-
-* ["Natives"](https://alex-kpojb.itch.io/natives-ecs)
-
-  [![](https://img.itch.zone/aW1hZ2UvMzU3OTkxLzE4MzA4MjEuZ2lm/794x1000/molzXR.gif)](https://alex-kpojb.itch.io/natives-ecs)
 
 # Расширения
 * [Интеграция в редактор Unity](https://github.com/Leopotam/ecs-unityintegration)
 * [Поддержка Unity uGui](https://github.com/Leopotam/ecs-ui)
 * [Поддержка многопоточности](https://github.com/Leopotam/ecs-threads)
-* [UniLeo - Unity scene data converter](https://github.com/voody2506/UniLeo)
 * [Unity Physx events support](https://github.com/supremestranger/leoecs-physics)
 
 # Лицензия
