@@ -1,7 +1,7 @@
 # LeoECS - Легковесный C# Entity Component System фреймворк
 Производительность, нулевые или минимальные аллокации, минимизация использования памяти, отсутствие зависимостей от любого игрового движка - это основные цели данного фреймворка.
 
-> **ВАЖНО!** РАЗРАБОТКА ДАННОГО ПРОЕКТА ПРЕКРАЩЕНА, ВМЕСТО НЕГО СЛЕДУЕТ ИСПОЛЬЗОВАТЬ [EcsProto](https://leopotam.com/28/) или [EcsLite](https://github.com/Leopotam/ecslite).
+> **ВАЖНО!** РАЗРАБОТКА ДАННОГО ПРОЕКТА ПРЕКРАЩЕНА, ВМЕСТО НЕГО СЛЕДУЕТ ИСПОЛЬЗОВАТЬ [EcsProto](https://gitverse.ru/leopotam/ecsproto), либо [EcsLite](https://github.com/Leopotam/ecslite).
 
 > **ВАЖНО!** Не забывайте использовать `DEBUG`-версии билдов для разработки и `RELEASE`-версии билдов для релизов: все внутренние проверки/исключения будут работать только в `DEBUG`-версиях и удалены для увеличения производительности в `RELEASE`-версиях.
 
@@ -32,8 +32,10 @@
 * [Лицензия](#Лицензия)
 * [ЧаВо](#ЧаВо)
 
+
 # Социальные ресурсы
-[![discord](https://img.shields.io/discord/404358247621853185.svg?label=enter%20to%20discord%20server&style=for-the-badge&logo=discord)](https://discord.gg/5GZVde6)
+[Блог разработчика](https://leopotam.ru/)
+
 
 # Установка
 
@@ -90,7 +92,7 @@ EcsEntity entity2Copy = entity2.Copy ();
 var newEntity = world.NewEntity ();
 entity2Copy.MoveTo (newEntity); // все компоненты с "entity2Copy" переместятся на "newEntity", а "entity2Copy" будет удалена.
 
-// Любая сущность может быть удалена, при этом сначала все компоненты будут автоматически удалены и только потом энтити будет считаться уничтоженной. 
+// Любая сущность может быть удалена, при этом сначала все компоненты будут автоматически удалены и только потом энтити будет считаться уничтоженной.
 entity.Destroy ();
 ```
 
@@ -107,7 +109,7 @@ class UserSystem : IEcsPreInitSystem, IEcsInitSystem, IEcsRunSystem, IEcsDestroy
     public void Init () {
         // Будет вызван один раз в момент работы EcsSystems.Init() и после срабатывания IEcsPreInitSystem.PreInit().
     }
-    
+
     public void Run () {
         // Будет вызван один раз в момент работы EcsSystems.Run().
     }
@@ -151,11 +153,11 @@ systems
 class TestSystem1 : IEcsInitSystem {
     // Поле с авто-инъекцией.
     SharedData _sharedData;
-    
+
     public void Init() {
         var prefabPath = string.Format (_sharedData.Prefabspath, 123);
         // prefabPath = "Items/123" к этому моменту.
-    } 
+    }
 }
 ```
 > **ВАЖНО!** Для инъекции подходят только нестатичные public/private-поля конечного класса системы, либо public/protected-поля базовых классов. Все остальные поля будут проигнорированы!
@@ -238,7 +240,7 @@ class Startup : MonoBehaviour {
             .Add (new WeaponSystem ());
         _systems.Init ();
     }
-    
+
     void Update () {
         // Выполняем все подключенные системы.
         _systems.Run ();
@@ -310,7 +312,7 @@ class EcsStartup {
     EcsSystems _systems;
 
     // Инициализация окружения.
-    void Init () {        
+    void Init () {
         _world = new EcsWorld ();
         _systems = new EcsSystems (_world);
         _systems
@@ -318,12 +320,12 @@ class EcsStartup {
             // быть зарегистрированы здесь, порядок важен:
             // .Add (new TestSystem1 ())
             // .Add (new TestSystem2 ())
-            
+
             // OneFrame-компоненты должны быть зарегистрированы
             // в общем списке систем, порядок важен:
             // .OneFrame<TestComponent1> ()
             // .OneFrame<TestComponent2> ()
-            
+
             // Инъекция должна быть произведена здесь,
             // порядок не важен:
             // .Inject (new CameraService ())
@@ -435,7 +437,7 @@ class EcsStartup {
 
 Если не важно - существовал компонент ранее и просто нужна уверенность, что он теперь существует достаточно вызова `EcsEntity.Get<T>()`.
 
-Если нужно понимание, что компонент существовал ранее - это можно проверить с помощью вызова `EcsEntity.Has<T>()`.  
+Если нужно понимание, что компонент существовал ранее - это можно проверить с помощью вызова `EcsEntity.Has<T>()`.
 
 ### Я хочу одну систему вызвать в `MonoBehaviour.Update()`, а другую - в `MonoBehaviour.FixedUpdate()`. Как я могу это сделать?
 
@@ -540,7 +542,7 @@ var world = new EcsWorld(config);
 ### Мне нужно больше чем 6-"Include" и 2-"Exclude" ограничений для компонентов в фильтре. Как я могу сделать это?
 
 > **ВАЖНО!** Это приведет к модификации исходного кода фреймворка и несовместимости с обновлениями.
-> 
+>
 Необходимо воспользоваться [кодогенерацией EcsFilter](https://leopotam.github.io/ecs/filter-gen.html) классов и заменить содержимое файла `EcsFilter.cs`.
 
 ### Я хочу добавить реактивщины и обрабатывать события изменения фильтров. Как я могу это сделать?
@@ -553,7 +555,7 @@ class CustomListener: IEcsFilterListener {
     public void OnEntityAdded (in EcsEntity entity) {
         // Сущность добавлена в фильтр.
     }
-    
+
     public void OnEntityRemoved (in EcsEntity entity) {
         // Сущность удалена из фильтра.
     }
@@ -571,4 +573,4 @@ class MySystem : IEcsInitSystem, IEcsDestroySystem {
         _filter.RemoveListener (_listener);
     }
 }
-``` 
+```
